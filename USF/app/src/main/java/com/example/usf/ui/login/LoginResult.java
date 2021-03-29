@@ -28,4 +28,7 @@ class LoginResult {
     Integer getError() {
         return error;
     }
+
+
+
 }

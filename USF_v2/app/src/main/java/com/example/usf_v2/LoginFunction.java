@@ -88,6 +88,19 @@ public class LoginFunction {
         return userList;
     }
 
+    /**
+     * method to create an account
+     * @param userNameWildcard - inputted username
+     * @param password - inputted password
+     */
+
+
+    public void createAccount(String[] userNameWildcard,String password){
+        String[] args = {userNameWildcard[0], password};
+        System.out.println("123345");
+        mDb.execSQL("insert into User(username, password) values(?, ?)", args);
+    }
+
 
     /**
      * Checks the user inputted username and password against what is stored in the database.
@@ -98,62 +111,33 @@ public class LoginFunction {
     public boolean checkLogin(String[] userNameWildcard, String password) {
         try {
 
+            boolean loginState = false;
             String[] resultColumns = {"username, password"};
             Cursor result = mDb.query("User", resultColumns, "username = ?", userNameWildcard, null, null, null, null);
-            result.moveToFirst();
-            //System.out.println(result.getCount() + " rows, " + result.getString(result.getColumnIndex("password")));
-            String userPass = result.getString(result.getColumnIndex("password"));
+            System.out.println(result.getCount());
+            //checks if there's one or more result in the DB
+            if (result.getCount() > 0) {
+                result.moveToFirst();
 
+                System.out.println(result.getCount());
+                System.out.println(result.getCount() + " rows, " + result.getString(result.getColumnIndex("password")));
+                String userPass = result.getString(result.getColumnIndex("password"));
 
-            if (result.getCount() == 1 && userPass.equals(password)) {
-                return true;
-            } else if (result.getCount() == 0) {
-                //create login?
-                return false;
-            } else {
-                return false;
-            }
-        }
-        catch (Exception e) {
-            //System.out.println("statement failed");
-            //se.printStackTrace();
-            return false;
-        }
-
-        //deprecated code
-            /*
-            //Statement s = c.createStatement();
-            //ResultSet rs = s.executeQuery("SELECT * FROM 'User';");
-            //boolean loggedIn = false;
-            while (rs.next()) {
-                if(rs.getString("username").compareTo(userName) == 0 && rs.getString("password").compareTo(password) == 0) {
-                    //System.out.println("Welcome");
-                    //loggedIn = true;
-                    return true;
-                    //break;
+                //checks the username and password is correct
+                if (result.getCount() == 1 && userPass.equals(password)) {
+                    loginState = true;
                 }
             }
 
+            //otherwise create an account
+            if (result.getCount() == 0) {
+                createAccount(userNameWildcard, password);
+                loginState = true;
+            }
+            return loginState;
 
-             */
-            //if(!loggedIn) {
-            //    System.out.println("Login Failed");
-               // return false;
-                //askLogin(userName, password);
-                //checkLogin();
-            //}
+        } catch (Exception e) {
+            return false;
+        }
     }
-
-
-//deprecated method - overriden by the apps login page
-    /*
-    public void askLogin(String userName, String password) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter username");
-        this.userName = scanner.nextLine();  // Read user input
-
-        System.out.println("Enter password");
-        this.password = scanner.nextLine();  // Read user input
-    }
-     */
 }

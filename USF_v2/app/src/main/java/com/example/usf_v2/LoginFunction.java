@@ -1,47 +1,26 @@
 package com.example.usf_v2;
-
 import java.sql.*;
-import java.util.Scanner;
+import java.util.*;
+import android.content.*;
+import android.database.*;
+import android.database.sqlite.*;
+import java.io.*;
 
-
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-
-
-
-
-
-
-
-
+/**
+ * Login Function class used to log in, create an account and gather all of the user data.
+ */
 
 public class LoginFunction {
-
-    private Connection c = null;
-
-    String userName = "";
-    String password = "";
 
     private DatabaseHelper mDBHelper;
     private SQLiteDatabase mDb;
 
-
-
-    private static final String DATABASE_NAME = "UniSocietyFinderDatabase.db";
-    private static final String DATABASE_PATH = "/data/data/com.example.usf_v2/databases/";
-    SQLiteDatabase db;
-
-
-
-
+    /**
+     * Constructor, attempts to open and update the database ready for any further queries.
+     * @param username ?
+     * @param password ?
+     * @param context the window which is calling the function
+     */
     public LoginFunction(String username, String password, Context context) {
 
         //code taken from http://blog.harrix.org/article/6784
@@ -80,14 +59,49 @@ public class LoginFunction {
         */
     }
 
+    /**
+     * Gets the data from the User_Societies table that is associated with that specific user.
+     * @param userList list of societies to populate
+     * @param wildcardArgs String array of wildcards to fill the query
+     * @return the list of societies
+     */
+    public List<String> getUserData(List<String> userList, String[] wildcardArgs) {
+        try {
+            Cursor result = mDb.rawQuery(
+                    "SELECT s.society_name FROM 'User' u INNER JOIN 'User_Societies' us ON us.user_id = u.user_id " +
+                            "INNER JOIN 'Societies' s ON s.society_id = us.society_id WHERE us.username = ?", wildcardArgs);
+            int rowCount = result.getCount();
+            result.moveToFirst();
 
+            for(int i = 0; i < rowCount; i++)
+            {
+                userList.add(result.getString(result.getColumnIndex("society_name")));
+                //System.out.println(result.getString(result.getColumnIndex("society_name")));
+                result.moveToNext();
+            }
+
+        }
+        catch (Exception e) {
+            System.out.println("SQL Failed!");
+            return userList;
+        }
+        return userList;
+    }
+
+
+    /**
+     * Checks the user inputted username and password against what is stored in the database.
+     * @param userNameWildcard used to fill the SQL query with the inputted username
+     * @param password to check the inputted password
+     * @return true if present
+     */
     public boolean checkLogin(String[] userNameWildcard, String password) {
         try {
 
             String[] resultColumns = {"username, password"};
             Cursor result = mDb.query("User", resultColumns, "username = ?", userNameWildcard, null, null, null, null);
             result.moveToFirst();
-            System.out.println(result.getCount() + " rows, " + result.getString(result.getColumnIndex("password")));
+            //System.out.println(result.getCount() + " rows, " + result.getString(result.getColumnIndex("password")));
             String userPass = result.getString(result.getColumnIndex("password"));
 
 

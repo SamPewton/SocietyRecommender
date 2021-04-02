@@ -135,8 +135,11 @@ public class LoginFunction {
 
             //otherwise create an account
             if (result.getCount() == 0) {
-                createAccount(userNameWildcard, password);
-                loginState = true;
+                if(passwordAllowed(password) && userNameAllowed(userNameWildcard[0]))
+                {
+                    createAccount(userNameWildcard, password);
+                    loginState = true;
+                }
             }
             return loginState;
 

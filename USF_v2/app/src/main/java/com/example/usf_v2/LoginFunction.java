@@ -1,9 +1,12 @@
 package com.example.usf_v2;
+
 import java.sql.*;
 import java.util.*;
+
 import android.content.*;
 import android.database.*;
 import android.database.sqlite.*;
+
 import java.io.*;
 
 /**
@@ -17,9 +20,10 @@ public class LoginFunction {
 
     /**
      * Constructor, attempts to open and update the database ready for any further queries.
+     *
      * @param username ?
      * @param password ?
-     * @param context the window which is calling the function
+     * @param context  the window which is calling the function
      */
     public LoginFunction(String username, String password, Context context) {
 
@@ -37,7 +41,6 @@ public class LoginFunction {
         } catch (android.database.SQLException mSQLException) {
             throw mSQLException;
         }
-
 
 
         //deprecated code
@@ -61,7 +64,8 @@ public class LoginFunction {
 
     /**
      * Gets the data from the User_Societies table that is associated with that specific user.
-     * @param userList list of societies to populate
+     *
+     * @param userList     list of societies to populate
      * @param wildcardArgs String array of wildcards to fill the query
      * @return the list of societies
      */
@@ -73,15 +77,13 @@ public class LoginFunction {
             int rowCount = result.getCount();
             result.moveToFirst();
 
-            for(int i = 0; i < rowCount; i++)
-            {
+            for (int i = 0; i < rowCount; i++) {
                 userList.add(result.getString(result.getColumnIndex("society_name")));
                 //System.out.println(result.getString(result.getColumnIndex("society_name")));
                 result.moveToNext();
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("SQL Failed!");
             return userList;
         }
@@ -90,12 +92,13 @@ public class LoginFunction {
 
     /**
      * method to create an account
+     *
      * @param userNameWildcard - inputted username
-     * @param password - inputted password
+     * @param password         - inputted password
      */
 
 
-    public void createAccount(String[] userNameWildcard,String password){
+    public void createAccount(String[] userNameWildcard, String password) {
         String[] args = {userNameWildcard[0], password};
         System.out.println("123345");
         mDb.execSQL("insert into User(username, password) values(?, ?)", args);
@@ -104,8 +107,9 @@ public class LoginFunction {
 
     /**
      * Checks the user inputted username and password against what is stored in the database.
+     *
      * @param userNameWildcard used to fill the SQL query with the inputted username
-     * @param password to check the inputted password
+     * @param password         to check the inputted password
      * @return true if present
      */
     public boolean checkLogin(String[] userNameWildcard, String password) {
@@ -140,4 +144,27 @@ public class LoginFunction {
             return false;
         }
     }
+
+
+    public boolean passwordAllowed(String password) {
+        boolean isAllowed = false;
+        if (password.length() > 5) {
+            isAllowed = true;
+        }
+
+        return isAllowed;
+    }
+
+    public boolean userNameAllowed(String username) {
+        boolean isAllowed = false;
+        if (username.contains(" ") || username.length() < 1) {
+
+        } else {
+            isAllowed = true;
+        }
+        return isAllowed;
+    }
+
+
 }
+

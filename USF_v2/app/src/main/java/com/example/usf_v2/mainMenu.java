@@ -25,6 +25,8 @@ public class mainMenu extends AppCompatActivity {
         final TextView tqInfo = findViewById(R.id.textView);
         final TextView socInfo = findViewById(R.id.textView2);
         final TextView recInfo = findViewById(R.id.textView3);
+        Intent intent = getIntent();
+        System.out.println(intent.getStringExtra("user_name") + " is the logged in user!");
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override

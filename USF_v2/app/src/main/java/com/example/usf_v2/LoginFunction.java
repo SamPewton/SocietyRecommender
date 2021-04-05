@@ -168,6 +168,51 @@ public class LoginFunction {
         return isAllowed;
     }
 
+    //for use later when making the matching algorithm - make input params as questions answers.
+    public String stringBuilder() {
+        String[] results = {"Y","Y","N","Y","Y"};
+        String[] categoryQuestion = {"Y", "N", "Y", "Y", "Y"};
+        String[] categories = {"'Religion & Culture'", "'Sport'", "'Art'", "'Music'", "'Technology'"};
+        String result = "";
+
+        //check if the user answered yes, if so append to the string to return
+        for(int i = 0; i < results.length; i++) {
+            if(results[i].equals("Y")) {
+                if(result .equals("")) {
+                    result = categories[i];
+                }
+                else {
+                    result = result + ", " + categories[i];
+                }
+            }
+        }
+
+        //check the category question and see if any other results, append to the return string
+        for(int i = 0; i < categoryQuestion.length; i++) {
+            if(categoryQuestion[i].equals("Y") && results[i].equals("N"))
+            {
+                if(result .equals("")) {
+                    result = categories[i];
+                }
+                else {
+                    result = result + ", " + categories[i];
+                }
+            }
+        }
+        //return the string to the method call for the sql
+        return result;
+    }
+
+    //for use later with the matching algorithm
+    public void runAlgorithm(String[] wildcard) {
+        try {
+            mDb.execSQL("SELECT * FROM 'Societies' WHERE 'Category' IN (?);", wildcard);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
 

@@ -14,6 +14,7 @@ import java.util.*;
 public class MainActivity extends AppCompatActivity {
     List<String> userData = new ArrayList<>();
     String loggedInUser = "";
+    String usersPW = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 if (sql.checkLogin(userInputtedUN, password.getText().toString())) {
                     //sets the global loggedInUser variable to the name of the user
                     loggedInUser = userName.getText().toString();
+                    usersPW = password.getText().toString();
                     //gets all of the user associated data and stores it in global userData variable
                     sql.getUserData(userData, userInputtedUN);
 
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     public void loginComplete()
     {
         Intent intent = new Intent(this, mainMenu.class);
+        intent.putExtra("user_name", loggedInUser);
+        intent.putExtra("user_pw", usersPW);
         startActivity(intent);
     }
 }

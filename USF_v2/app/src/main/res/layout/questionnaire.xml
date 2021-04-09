@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AF8312"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="0dp"
+        android:gravity="center"
+        android:text="1)  Are you interested in finding out more about different   cultures, or are interested in meeting people with similar beliefs and views?"
+        />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-90dp"
+        android:text="2) Are you interested in sports?" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-185dp"
+        android:text="3) Are you a creative/artistic person?" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-280dp"
+        android:text="4) Do you have a passion for music?" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-360dp"
+        android:text="5) Do you like technology?" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-450dp"
+        android:text="6) Select all the categories you're interested in" />
+
+    <RadioButton
+        android:id="@+id/Q1Y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-45dp"
+        android:text="Yes" />
+
+    <RadioButton
+        android:id="@+id/Q1N"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-70dp"
+        android:text="No" />
+
+    <RadioButton
+        android:id="@+id/Q2Y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-135dp"
+        android:text="Yes" />
+
+    <RadioButton
+        android:id="@+id/Q2N"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-160dp"
+        android:text="No" />
+
+    <RadioButton
+        android:id="@+id/Q3Y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-225dp"
+        android:text="Yes" />
+
+    <RadioButton
+        android:id="@+id/Q3N"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-250dp"
+        android:text="No" />
+
+    <RadioButton
+        android:id="@+id/Q4Y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-320dp"
+        android:text="Yes" />
+
+    <RadioButton
+        android:id="@+id/Q4N"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-345dp"
+        android:text="No" />
+
+    <RadioButton
+        android:id="@+id/Q5Y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-400dp"
+        android:text="Yes" />
+
+    <RadioButton
+        android:id="@+id/Q5N"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-425dp"
+        android:text="No" />
+
+    <CheckBox
+        android:id="@+id/CheckBoxCR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_marginBottom="-500dp"
+        android:layout_marginLeft="20dp"
+        android:text="Culture / Religion" />
+
+    <CheckBox
+        android:id="@+id/CheckBoxSport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_marginBottom="-500dp"
+        android:layout_marginLeft="180dp"
+        android:text="Sport" />
+
+    <CheckBox
+        android:id="@+id/CheckBoxArt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_marginBottom="-500dp"
+        android:layout_marginLeft="270dp"
+        android:text="Art" />
+
+    <CheckBox
+        android:id="@+id/CheckBoxMusic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_marginBottom="-535dp"
+        android:layout_marginLeft="100dp"
+        android:text="Music" />
+
+    <CheckBox
+        android:id="@+id/CheckBoxTechnology"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_marginBottom="-535dp"
+        android:layout_marginLeft="200dp"
+        android:text="Technology" />
+
+
+</RelativeLayout>

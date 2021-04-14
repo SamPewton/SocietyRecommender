@@ -11,6 +11,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class mainMenu extends AppCompatActivity {
 
     @Override
@@ -18,6 +22,8 @@ public class mainMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        Button displayAllButton = findViewById(R.id.button3);
+        Button displayRecommendedButton = findViewById(R.id.button4);
         Button logOutButton = findViewById(R.id.button5);
         ImageButton takeQuizInfo = findViewById(R.id.imageButton);
         ImageButton viewAllSocInfo = findViewById(R.id.imageButton2);
@@ -26,7 +32,58 @@ public class mainMenu extends AppCompatActivity {
         final TextView socInfo = findViewById(R.id.textView2);
         final TextView recInfo = findViewById(R.id.textView3);
         Intent intent = getIntent();
-        System.out.println(intent.getStringExtra("user_name") + " is the logged in user!");
+
+
+
+
+
+        //-------------------TO IMPLEMENT IN QUIZ PAGE-------------------//
+        LoginFunction sql = new LoginFunction(intent.getStringExtra("user_name"), intent.getStringExtra("user_pw"), this);
+        //change this to a hashmap, for use on display page
+        String[] userInputtedUN = {intent.getStringExtra("user_name")};
+        sql.runAlgorithm(userInputtedUN);
+        //---------------------------------------------------------------//
+
+
+
+        displayAllButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //------------------------------------------------------------------//
+                //------------------------------------------------------------------//
+                //-------------------TO IMPLEMENT IN DISPLAY PAGE-------------------//
+                HashMap<String, String> allSocieties = new HashMap<>();
+                sql.getAllSocieties(allSocieties);
+
+                //this part only prints all of the values in the hashmap
+                for(String s : allSocieties.keySet()) {
+                    System.out.println(s + " " + allSocieties.get(s));
+                }
+                //------------------------------------------------------------------//
+                //------------------------------------------------------------------//
+                //------------------------------------------------------------------//
+            }
+        });
+
+
+        displayRecommendedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //------------------------------------------------------------------//
+                //------------------------------------------------------------------//
+                //-------------------TO IMPLEMENT IN DISPLAY PAGE-------------------//
+                HashMap<String, String> userData = new HashMap<>();
+                sql.getUserData(userData, userInputtedUN);
+
+                //this part only prints all of the values in the hashmap
+                for(String s : userData.keySet()) {
+                    System.out.println(s + " " + userData.get(s));
+                }
+                //------------------------------------------------------------------//
+                //------------------------------------------------------------------//
+                //------------------------------------------------------------------//
+            }
+        });
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override

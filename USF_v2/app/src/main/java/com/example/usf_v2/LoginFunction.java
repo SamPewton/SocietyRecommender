@@ -41,54 +41,8 @@ public class LoginFunction {
         } catch (android.database.SQLException mSQLException) {
             throw mSQLException;
         }
-
-
-        //deprecated code
-         /*
-        try {
-            c = DriverManager.getConnection("jdbc:sqlite:/assets/UniSocietyFinderDatabase.db");
-            this.userName = username;
-            this.password = password;
-        }
-
-        catch (SQLException se) {
-            //se.printStackTrace();
-            System.out.println("db connection failed");
-        }
-
-        //askLogin(userName, password);
-
-        System.out.println(checkDbExist());
-        */
     }
 
-    /**
-     * Gets the data from the User_Societies table that is associated with that specific user.
-     *
-     * @param userList     list of societies to populate
-     * @param wildcardArgs String array of wildcards to fill the query
-     * @return the list of societies
-     */
-    public List<String> getUserData(List<String> userList, String[] wildcardArgs) {
-        try {
-            Cursor result = mDb.rawQuery(
-                    "SELECT s.society_name FROM 'User' u INNER JOIN 'User_Societies' us ON us.user_id = u.user_id " +
-                            "INNER JOIN 'Societies' s ON s.society_id = us.society_id WHERE us.username = ?", wildcardArgs);
-            int rowCount = result.getCount();
-            result.moveToFirst();
-
-            for (int i = 0; i < rowCount; i++) {
-                userList.add(result.getString(result.getColumnIndex("society_name")));
-                //System.out.println(result.getString(result.getColumnIndex("society_name")));
-                result.moveToNext();
-            }
-
-        } catch (Exception e) {
-            System.out.println("SQL Failed!");
-            return userList;
-        }
-        return userList;
-    }
 
     /**
      * method to create an account
@@ -96,12 +50,12 @@ public class LoginFunction {
      * @param userNameWildcard - inputted username
      * @param password         - inputted password
      */
-
-
     public void createAccount(String[] userNameWildcard, String password) {
         String[] args = {userNameWildcard[0], password};
-        System.out.println("123345");
-        mDb.execSQL("insert into User(username, password) values(?, ?)", args);
+        ContentValues insert = new ContentValues();
+        insert.put("username", userNameWildcard[0]);
+        insert.put("password", password);
+        long id = mDb.insert("User", null, insert);
     }
 
 
@@ -118,13 +72,9 @@ public class LoginFunction {
             boolean loginState = false;
             String[] resultColumns = {"username, password"};
             Cursor result = mDb.query("User", resultColumns, "username = ?", userNameWildcard, null, null, null, null);
-            System.out.println(result.getCount());
             //checks if there's one or more result in the DB
             if (result.getCount() > 0) {
                 result.moveToFirst();
-
-                System.out.println(result.getCount());
-                System.out.println(result.getCount() + " rows, " + result.getString(result.getColumnIndex("password")));
                 String userPass = result.getString(result.getColumnIndex("password"));
 
                 //checks the username and password is correct
@@ -141,23 +91,31 @@ public class LoginFunction {
                     loginState = true;
                 }
             }
+            result.close();
             return loginState;
-
         } catch (Exception e) {
             return false;
         }
     }
 
-
+    /**
+     * Checks the user inputted password to see if it is at least of length 5.
+     * @param password to check
+     * @return true if passed validation, otherwise false
+     */
     public boolean passwordAllowed(String password) {
         boolean isAllowed = false;
         if (password.length() > 5) {
             isAllowed = true;
         }
-
         return isAllowed;
     }
 
+    /**
+     * Checks the user inputted username to see if it contains spaces or is blank
+     * @param username to check
+     * @return true if username passes validation, false otherwise
+     */
     public boolean userNameAllowed(String username) {
         boolean isAllowed = false;
         if (username.contains(" ") || username.length() < 1) {
@@ -168,51 +126,147 @@ public class LoginFunction {
         return isAllowed;
     }
 
-    //for use later when making the matching algorithm - make input params as questions answers.
-    public String stringBuilder() {
-        String[] results = {"Y","Y","N","Y","Y"};
-        String[] categoryQuestion = {"Y", "N", "Y", "Y", "Y"};
-        String[] categories = {"'Religion & Culture'", "'Sport'", "'Art'", "'Music'", "'Technology'"};
-        String result = "";
+    /**
+     * Checks the quiz answers and prepares an array to pass to the query
+     * @return String array containing the categories that have been answered 'Yes'
+     */
+    public String[] categorySelector() {
+        String[] results = {"N","N","N","Y","N"};
+        //String[] categoryQuestion = {"Y", "N", "Y", "Y", "Y"};
+        String[] categories = {"Culture & Religion", "Sport", "Art", "Music", "Technology"};
+        int counter = 0;
 
-        //check if the user answered yes, if so append to the string to return
         for(int i = 0; i < results.length; i++) {
             if(results[i].equals("Y")) {
-                if(result .equals("")) {
-                    result = categories[i];
-                }
-                else {
-                    result = result + ", " + categories[i];
-                }
+                counter++;
             }
         }
 
-        //check the category question and see if any other results, append to the return string
-        for(int i = 0; i < categoryQuestion.length; i++) {
-            if(categoryQuestion[i].equals("Y") && results[i].equals("N"))
-            {
-                if(result .equals("")) {
-                    result = categories[i];
-                }
-                else {
-                    result = result + ", " + categories[i];
-                }
+        //arraylist to add categories to
+        List<String> returnArray = new ArrayList<>();
+
+        //this is the misc category that will always show for everyone
+        returnArray.add("Misc");
+
+        //add each of the categories that have been replied to with 'yes'
+        for(int i = 0; i < results.length; i++) {
+            if(results[i].equals("Y")) {
+                returnArray.add(categories[i]);
             }
         }
-        //return the string to the method call for the sql
-        return result;
+
+        //turn the arraylist into a String array ready to return
+        String[] stringArray = Arrays.copyOf(returnArray.toArray(), returnArray.toArray().length, String[].class);
+        return stringArray;
     }
 
-    //for use later with the matching algorithm
-    public void runAlgorithm(String[] wildcard) {
+    /**
+     * run the algorithm to match societies based on quiz questions, updates the database as required
+     * @param username to input values against
+     */
+    public void runAlgorithm(String[] username) {
         try {
-            mDb.execSQL("SELECT * FROM 'Societies' WHERE 'Category' IN (?);", wildcard);
+            String[] categories = categorySelector();
+            //loop through all of the values in the wildcard array. these are generated from the string builder
+            //remove all of the societies previously stored against this account, they retook the quiz
+            mDb.delete("User_Societies", "username = ?", username);
+            for(int k = 0; k < categories.length; k++) {
+                //temp wildcard for querying each time
+                String[] tempWC = {categories[k]};
+                //columns to search the db for
+                String[] resultColumnsQR = {"society_id, society_name"};
+
+                //query to return all of the societies in a specific category
+                Cursor result = mDb.query("Societies", resultColumnsQR, "category = ?", tempWC, null, null, null, null);
+                System.out.println(result.getCount());
+                //query to get the user id for inserting into the table
+                String[] resultColumns = {"user_id, username"};
+                Cursor usersID = mDb.query("User", resultColumns, "username = ?", username, null, null, null, null);
+
+                //if there is a result (there will be), then move to insert
+                if (result.getCount() > 0 && usersID.getCount() > 0) {
+                    result.moveToFirst();
+                    usersID.moveToFirst();
+
+                    int userIDInt = usersID.getInt(usersID.getColumnIndex("user_id"));
+
+                    //insert each of the results in the database
+                    for (int i = 0; i < result.getCount(); i++) {
+                        int societyID = result.getInt(result.getColumnIndex("society_id"));
+                        String societyName = result.getString(result.getColumnIndex("society_name"));
+
+                        Object[] insertWildcards = {societyID, userIDInt, societyName, username[0]};
+
+                        //query to insert into the user societies table
+                        mDb.execSQL("insert into User_Societies(society_id, user_id, society_name, username) values(?, ?, ?, ?);", insertWildcards);
+                        result.moveToNext();
+                    }
+
+                }
+                //close both result connections
+                result.close();
+                usersID.close();
+            }
         }
         catch(Exception e) {
             e.printStackTrace();
         }
     }
 
+
+    /**
+     * Gets the data from the User_Societies table that is associated with that specific user.
+     *
+     * @param userList     list of societies to populate
+     * @param wildcardArgs String array of wildcards to fill the query
+     * @return the list of societies
+     */
+    public HashMap<String, String> getUserData(HashMap<String, String> userList, String[] wildcardArgs) {
+        try {
+            Cursor result = mDb.rawQuery(
+                    "SELECT s.society_name, s.webpage_link FROM 'User' u INNER JOIN 'User_Societies' us ON us.user_id = u.user_id " +
+                            "INNER JOIN 'Societies' s ON s.society_id = us.society_id WHERE us.username = ?", wildcardArgs);
+            int rowCount = result.getCount();
+            result.moveToFirst();
+
+            for (int i = 0; i < rowCount; i++) {
+                userList.put(result.getString(result.getColumnIndex("society_name")), result.getString(result.getColumnIndex("webpage_link")));
+                result.moveToNext();
+            }
+
+            result.close();
+
+        } catch (Exception e) {
+            System.out.println("SQL Failed!");
+            return userList;
+        }
+        return userList;
+    }
+
+    /**
+     * returns a hashmap of all societies in the database
+     * @param userList hashmap to populate
+     * @return the updated hashmap
+     */
+    public HashMap<String, String> getAllSocieties(HashMap<String, String> userList) {
+        try {
+            Cursor result = mDb.rawQuery(
+                    "SELECT society_name, webpage_link FROM 'Societies';", null);
+            int rowCount = result.getCount();
+            result.moveToFirst();
+
+            for (int i = 0; i < rowCount; i++) {
+                userList.put(result.getString(result.getColumnIndex("society_name")), result.getString(result.getColumnIndex("webpage_link")));
+                result.moveToNext();
+            }
+
+            result.close();
+        } catch (Exception e) {
+            System.out.println("SQL Failed!");
+            return userList;
+        }
+        return userList;
+    }
 
 }
 

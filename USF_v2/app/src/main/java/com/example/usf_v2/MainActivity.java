@@ -27,9 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
         LoginFunction sql = new LoginFunction(userName.getText().toString(), password.getText().toString(), this);
 
-        //list for storing all of the users recommended societies
-
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String[] userInputtedUN = {userName.getText().toString()};
@@ -39,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
                     //sets the global loggedInUser variable to the name of the user
                     loggedInUser = userName.getText().toString();
                     usersPW = password.getText().toString();
-                    //gets all of the user associated data and stores it in global userData variable
-                    sql.getUserData(userData, userInputtedUN);
-
 
                     //!!if logs in ok, move onto the next page!!//
                     System.out.println("Logged in ok");
@@ -49,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
                     loginComplete();
                 }
-                //else if the username is not in the database, create account
-                //write other else?
                 //otherwise the login has failed
                 else {
                     //show the login failed and reprompt
@@ -58,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                     String wrongPass = "You have entered the wrong user or password";
                     Toast.makeText(getApplicationContext(), wrongPass, Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 

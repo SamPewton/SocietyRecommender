@@ -13,19 +13,18 @@ public class TakeQuiz extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_quiz);
+        Button BackButton = findViewById(R.id.ButtonBack);
+        Button ContinueButton= findViewById(R.id.ButtonContinue);
 
-        Button OpenBack = findViewById(R.id.ButtonBack);
-        Button OpenContinue = findViewById(R.id.ButtonContinue);
 
-
-        OpenBack.setOnClickListener(new View.OnClickListener() {
+        BackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BackButtonComplete();
             }
         });
 
-        OpenContinue.setOnClickListener(new View.OnClickListener() {
+        ContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ContinueButtonComplete();

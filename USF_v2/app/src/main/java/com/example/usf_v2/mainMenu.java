@@ -18,6 +18,7 @@ public class mainMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        Button TakeQuizButton = findViewById(R.id.button2);
         Button logOutButton = findViewById(R.id.button5);
         ImageButton takeQuizInfo = findViewById(R.id.imageButton);
         ImageButton viewAllSocInfo = findViewById(R.id.imageButton2);
@@ -34,6 +35,13 @@ public class mainMenu extends AppCompatActivity {
                 logOutComplete();
             }
         });
+
+        TakeQuizButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { OpenQuiz(); }
+        });
+
+
 
         takeQuizInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,11 +102,16 @@ public class mainMenu extends AppCompatActivity {
 
         });
     }
+
+    public void OpenQuiz(){
+        Intent intent = new Intent(this, TakeQuiz.class);
+        startActivity(intent);
+    }
+
     public void logOutComplete() {
         String exitMessage = "You have successfully logged out";
         Toast.makeText(getApplicationContext(), exitMessage, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-
 }

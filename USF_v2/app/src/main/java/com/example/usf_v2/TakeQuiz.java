@@ -41,6 +41,7 @@ public class TakeQuiz extends AppCompatActivity {
     }
 
     public void ContinueButtonComplete(){
-
+        Intent intent = new Intent(this, SocietiesView.class);
+        startActivity(intent);
     }
 }

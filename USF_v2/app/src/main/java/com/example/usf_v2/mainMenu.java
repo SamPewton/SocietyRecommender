@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class mainMenu extends AppCompatActivity {
+    String un = "";
+    String pw = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,37 +35,17 @@ public class mainMenu extends AppCompatActivity {
         final TextView tqInfo = findViewById(R.id.textView);
         final TextView socInfo = findViewById(R.id.textView2);
         final TextView recInfo = findViewById(R.id.textView3);
-        Intent intent = getIntent();
+        Intent passedIn = getIntent();
+        un = passedIn.getStringExtra("user_name");
+        pw = passedIn.getStringExtra("user_pw");
 
-
-
-
-
-        //-------------------TO IMPLEMENT IN QUIZ PAGE-------------------//
-        LoginFunction sql = new LoginFunction(intent.getStringExtra("user_name"), intent.getStringExtra("user_pw"), this);
-        //change this to a hashmap, for use on display page
-        String[] userInputtedUN = {intent.getStringExtra("user_name")};
-        sql.runAlgorithm(userInputtedUN);
-        //---------------------------------------------------------------//
-
-
+        LoginFunction sql = new LoginFunction(un, pw, this);
+        String[] userInputtedUN = {un};
 
         displayAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //------------------------------------------------------------------//
-                //------------------------------------------------------------------//
-                //-------------------TO IMPLEMENT IN DISPLAY PAGE-------------------//
-                HashMap<String, String> allSocieties = new HashMap<>();
-                sql.getAllSocieties(allSocieties);
-
-                //this part only prints all of the values in the hashmap
-                for(String s : allSocieties.keySet()) {
-                    System.out.println(s + " " + allSocieties.get(s));
-                }
-                //------------------------------------------------------------------//
-                //------------------------------------------------------------------//
-                //------------------------------------------------------------------//
+                viewAllSocieties();
             }
         });
 
@@ -71,19 +53,13 @@ public class mainMenu extends AppCompatActivity {
         displayRecommendedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //------------------------------------------------------------------//
-                //------------------------------------------------------------------//
-                //-------------------TO IMPLEMENT IN DISPLAY PAGE-------------------//
-                HashMap<String, String> userData = new HashMap<>();
-                sql.getUserData(userData, userInputtedUN);
 
-                //this part only prints all of the values in the hashmap
-                for(String s : userData.keySet()) {
-                    System.out.println(s + " " + userData.get(s));
+                if(sql.getUserSocietyCount(userInputtedUN) != 0) {
+                    viewRecommendedSocieties();
                 }
-                //------------------------------------------------------------------//
-                //------------------------------------------------------------------//
-                //------------------------------------------------------------------//
+                else {
+                    System.out.println("no societies here");
+                }
             }
         });
 
@@ -161,8 +137,26 @@ public class mainMenu extends AppCompatActivity {
         });
     }
 
+    public void viewRecommendedSocieties(){
+        Intent intent = new Intent(this, SocietiesView.class);
+        intent.putExtra("user_name", un);
+        intent.putExtra("user_pw", pw);
+        intent.putExtra( "type", 1);
+        startActivity(intent);
+    }
+
+    public void viewAllSocieties(){
+        Intent intent = new Intent(this, SocietiesView.class);
+        intent.putExtra("user_name", un);
+        intent.putExtra("user_pw", pw);
+        intent.putExtra( "type", 2);
+        startActivity(intent);
+    }
+
     public void OpenQuiz(){
         Intent intent = new Intent(this, TakeQuiz.class);
+        intent.putExtra("user_name", un);
+        intent.putExtra("user_pw", pw);
         startActivity(intent);
     }
 

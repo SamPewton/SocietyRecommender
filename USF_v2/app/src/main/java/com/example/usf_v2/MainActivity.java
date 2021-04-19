@@ -52,10 +52,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
-    public void loginComplete()
-    {
+
+    public void loginComplete() {
         Intent intent = new Intent(this, mainMenu.class);
         intent.putExtra("user_name", loggedInUser);
         intent.putExtra("user_pw", usersPW);

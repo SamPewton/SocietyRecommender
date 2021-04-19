@@ -130,14 +130,14 @@ public class LoginFunction {
      * Checks the quiz answers and prepares an array to pass to the query
      * @return String array containing the categories that have been answered 'Yes'
      */
-    public String[] categorySelector() {
-        String[] results = {"N","N","N","Y","N"};
+    public String[] categorySelector(String[] answers) {
+        //String[] results = {"N","N","N","Y","N"};
         //String[] categoryQuestion = {"Y", "N", "Y", "Y", "Y"};
         String[] categories = {"Culture & Religion", "Sport", "Art", "Music", "Technology"};
         int counter = 0;
 
-        for(int i = 0; i < results.length; i++) {
-            if(results[i].equals("Y")) {
+        for(int i = 0; i < answers.length; i++) {
+            if(answers[i].equals("Y")) {
                 counter++;
             }
         }
@@ -149,8 +149,8 @@ public class LoginFunction {
         returnArray.add("Misc");
 
         //add each of the categories that have been replied to with 'yes'
-        for(int i = 0; i < results.length; i++) {
-            if(results[i].equals("Y")) {
+        for(int i = 0; i < answers.length; i++) {
+            if(answers[i].equals("Y")) {
                 returnArray.add(categories[i]);
             }
         }
@@ -164,9 +164,9 @@ public class LoginFunction {
      * run the algorithm to match societies based on quiz questions, updates the database as required
      * @param username to input values against
      */
-    public void runAlgorithm(String[] username) {
+    public void runAlgorithm(String[] username, String[] answers) {
         try {
-            String[] categories = categorySelector();
+            String[] categories = categorySelector(answers);
             //loop through all of the values in the wildcard array. these are generated from the string builder
             //remove all of the societies previously stored against this account, they retook the quiz
             mDb.delete("User_Societies", "username = ?", username);
@@ -241,6 +241,22 @@ public class LoginFunction {
             return userList;
         }
         return userList;
+    }
+
+    public int getUserSocietyCount(String[] wildcardArgs) {
+        try {
+            Cursor result = mDb.rawQuery(
+                    "SELECT s.society_name, s.webpage_link FROM 'User' u INNER JOIN 'User_Societies' us ON us.user_id = u.user_id " +
+                            "INNER JOIN 'Societies' s ON s.society_id = us.society_id WHERE us.username = ?", wildcardArgs);
+            int total = result.getCount();
+
+
+            result.close();
+            return total;
+        } catch (Exception e) {
+            System.out.println("SQL Failed!");
+            return 0;
+        }
     }
 
     /**

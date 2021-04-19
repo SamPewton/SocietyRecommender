@@ -64,7 +64,8 @@ public class TakeQuiz extends AppCompatActivity {
         for(int i = 0 ; i < buttons.length ; i = i + 2)
         {
             if(buttons[i].isChecked() && buttons[i+1].isChecked() || !(buttons[i].isChecked()) && !(buttons[i+1].isChecked())) {
-                System.out.println("validation failed!");
+                String wrongPass = "You have filled out the quiz incorrectly!";
+                Toast.makeText(getApplicationContext(), wrongPass, Toast.LENGTH_LONG).show();
                 return false;
             }
         }

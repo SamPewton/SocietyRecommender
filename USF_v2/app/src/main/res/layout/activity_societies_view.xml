@@ -7,6 +7,61 @@
     android:background="#AF8312"
     tools:context=".SocietiesView">
 
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="316dp"
+        android:layout_height="75dp"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-107dp"
+        android:background="@color/white"
+        android:text=""
+        android:autoLink="web"/>
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="314dp"
+        android:layout_height="77dp"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-215dp"
+        android:background="@color/white"
+        android:text=""
+        android:autoLink="web"/>
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="318dp"
+        android:layout_height="73dp"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-328dp"
+        android:background="@color/white"
+        android:text=""
+        android:autoLink="web"/>
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="322dp"
+        android:layout_height="71dp"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-432dp"
+        android:background="@color/white"
+        android:text=""
+        android:autoLink="web"/>
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="318dp"
+        android:layout_height="72dp"
+        android:layout_alignBottom="@id/textView10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-545dp"
+        android:background="@color/white"
+        android:text=""
+        android:autoLink="web"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/textView10"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-70dp"
+        android:layout_marginBottom="-667dp"
         android:text="Back To Menu" />
 
     <TextView
@@ -32,5 +87,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="Societies" />
+
+
 
 </RelativeLayout>

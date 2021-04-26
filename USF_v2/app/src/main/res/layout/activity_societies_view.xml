@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/textView10"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-667dp"
+        android:layout_marginBottom="-615dp"
         android:text="Back To Menu" />
 
     <TextView

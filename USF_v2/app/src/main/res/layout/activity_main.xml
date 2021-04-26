@@ -11,10 +11,11 @@
         android:id="@+id/imageView3"
         android:layout_width="182dp"
         android:layout_height="110dp"
-        app:srcCompat="@mipmap/usf_logo_round"
         android:layout_alignTop="@id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"/>
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="35dp"
+        app:srcCompat="@mipmap/usf_logo_round" />
 
     <ImageView
         android:id="@+id/imageView"

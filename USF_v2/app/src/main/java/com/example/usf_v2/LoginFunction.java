@@ -71,6 +71,8 @@ public class LoginFunction {
     public boolean checkLogin(String[] userNameWildcard, String password) {
         try {
 
+            String hashedPW = getSecurePassword(password);
+
             boolean loginState = false;
             String[] resultColumns = {"username, password"};
             Cursor result = mDb.query("User", resultColumns, "username = ?", userNameWildcard, null, null, null, null);
@@ -80,7 +82,7 @@ public class LoginFunction {
                 String userPass = result.getString(result.getColumnIndex("password"));
 
                 //checks the username and password is correct
-                if (result.getCount() == 1 && userPass.equals(password)) {
+                if (result.getCount() == 1 && userPass.equals(hashedPW)) {
                     loginState = true;
                 }
             }
@@ -89,7 +91,7 @@ public class LoginFunction {
             if (result.getCount() == 0) {
                 if(passwordAllowed(password) && userNameAllowed(userNameWildcard[0]))
                 {
-                    createAccount(userNameWildcard, password);
+                    createAccount(userNameWildcard, hashedPW);
                     loginState = true;
                 }
             }

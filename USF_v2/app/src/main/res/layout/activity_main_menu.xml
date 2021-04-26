@@ -75,9 +75,9 @@
         android:layout_width="182dp"
         android:layout_height="110dp"
         android:layout_alignTop="@id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"
-        app:srcCompat="@mipmap/usf_logo_round" />
+        android:layout_marginTop="42dp"
+        app:srcCompat="@mipmap/usf_logo_round"
+        android:layout_centerInParent="true"/>
 
     <TextView
         android:layout_width="wrap_content"
